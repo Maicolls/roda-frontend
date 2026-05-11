@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { saveRequest } from "../api/creditApi" 
+import { saveCreditRequest } from "../api/creditApi"; 
 
 function ApplicantForm({ simulationResult, formData }) {
   const [applicantData, setApplicantData] = useState({
@@ -71,7 +71,7 @@ function ApplicantForm({ simulationResult, formData }) {
         totalPayment: simulationResult.totalPayment,
       }
 
-      await saveRequest(payload)
+      await saveCreditRequest(payload)
       setSuccess(true)
 
     } catch (error) {
