@@ -1,4 +1,5 @@
 import { simulateCredit } from "../api/creditApi";
+import { formatNumber, cleanNumber } from "../utils/formatCurrency";
 
 function SimulationForm({
   formData,
@@ -53,6 +54,21 @@ function SimulationForm({
       [e.target.name]: "",
     });
   };
+
+  const handleNumberChange = (e) => {
+    const rawValue = cleanNumber(e.target.value);
+
+    setFormData({
+      ...formData,
+      [e.target.name]: rawValue,
+    });
+
+    setErrors({
+      ...errors,
+      [e.target.name]: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -118,10 +134,11 @@ function SimulationForm({
               Valor del vehículo
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
               name="vehicleValue"
-              value={formData.vehicleValue}
-              onChange={handleChange}
+              value={formatNumber(formData.vehicleValue)}
+              onChange={handleNumberChange}
               placeholder="Ej: 8.000.000"
               className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition-all duration-200 focus:border-lime-500 focus:ring-4 focus:ring-lime-100"
             />
@@ -136,10 +153,11 @@ function SimulationForm({
               Cuota inicial
             </label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
               name="initialFee"
-              value={formData.initialFee}
-              onChange={handleChange}
+              value={formatNumber(formData.initialFee)}
+              onChange={handleNumberChange}
               placeholder="Ej: 1.000.000"
               className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none transition-all duration-200 focus:border-lime-500 focus:ring-4 focus:ring-lime-100"
             />

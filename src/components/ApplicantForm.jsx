@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { saveCreditRequest } from "../api/creditApi"; 
+import { useState } from "react";
+import { saveCreditRequest } from "../api/creditApi";
 
 function ApplicantForm({ simulationResult, formData }) {
   const [applicantData, setApplicantData] = useState({
@@ -8,54 +8,56 @@ function ApplicantForm({ simulationResult, formData }) {
     email: "",
     phone: "",
     city: "",
-  })
+  });
 
-  const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setApplicantData({
       ...applicantData,
       [e.target.name]: e.target.value,
-    })
+    });
     setErrors({
       ...errors,
       [e.target.name]: "",
-    })
-  }
+    });
+  };
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
 
-    if (!applicantData.firstName) newErrors.firstName = "El nombre es obligatorio"
-    if (!applicantData.lastName) newErrors.lastName = "El apellido es obligatorio"
+    if (!applicantData.firstName)
+      newErrors.firstName = "El nombre es obligatorio";
+    if (!applicantData.lastName)
+      newErrors.lastName = "El apellido es obligatorio";
 
     if (!applicantData.email) {
-      newErrors.email = "El correo es obligatorio"
+      newErrors.email = "El correo es obligatorio";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(applicantData.email)) {
-      newErrors.email = "Ingresa un correo válido"
+      newErrors.email = "Ingresa un correo válido";
     }
 
     if (!applicantData.phone) {
-      newErrors.phone = "El teléfono es obligatorio"
+      newErrors.phone = "El teléfono es obligatorio";
     } else if (!/^\d+$/.test(applicantData.phone)) {
-      newErrors.phone = "El teléfono solo debe contener números"
+      newErrors.phone = "El teléfono solo debe contener números";
     }
 
-    if (!applicantData.city) newErrors.city = "La ciudad es obligatoria"
+    if (!applicantData.city) newErrors.city = "La ciudad es obligatoria";
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const isValid = validateForm()
-    if (!isValid) return
+    const isValid = validateForm();
+    if (!isValid) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       // Combinamos datos personales + datos de la simulación
@@ -69,19 +71,18 @@ function ApplicantForm({ simulationResult, formData }) {
         monthlyPayment: simulationResult.monthlyPayment,
         totalInterest: simulationResult.totalInterest,
         totalPayment: simulationResult.totalPayment,
-      }
+      };
 
-      await saveCreditRequest(payload)
-      setSuccess(true)
-
+      await saveCreditRequest(payload);
+      setSuccess(true);
     } catch (error) {
-      alert(error.message)
+      alert(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-    // Pantalla de éxito
+  // Pantalla de éxito
   if (success) {
     return (
       <div className="bg-white rounded-3xl overflow-hidden">
@@ -180,6 +181,7 @@ function ApplicantForm({ simulationResult, formData }) {
             <input
               type="text"
               name="phone"
+              inputMode="numeric"
               placeholder="3001234567"
               value={applicantData.phone}
               onChange={handleChange}
@@ -228,4 +230,4 @@ function ApplicantForm({ simulationResult, formData }) {
   );
 }
 
-export default ApplicantForm
+export default ApplicantForm;

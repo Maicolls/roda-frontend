@@ -1,4 +1,4 @@
-const API_URL = "https://roda-backend-k6tk.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://roda-backend-k6tk.onrender.com";
 
 export const simulateCredit = async (formData) => {
   const response = await fetch(`${API_URL}/simulate`, {
